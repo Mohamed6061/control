@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Me</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            height: 93vh;
+            background-image: url(https://th.bing.com/th/id/R.6a11584…?rik=3ouXfKQLLts6tg&riu=http%3a%2f%2fwww.leadernetworks.com%2fwp-content%2fuploads%2f2017%2f04%2fquiz-background-slider.png&ehk=qAk%2fImcIw2xDaqeGron1zPSacLdCgFGrgA1xphSgy8Y%3d&risl=&pid=ImgRaw&r=0);
+            background-size: contain;
+        }
+        .n {
+            background: #eeeeeeb8;
+            padding: 24px;
+            box-shadow: 8px 6px 14px 0px black;
+            border-radius: 19px;
+            width: 85%;
+        }
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .correct {
+            background-color: green;
+            color: white;
+        }
+
+        .incorrect {
+            background-color: red;
+            color: white;
+        }
+
+        .option-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: -3px -4px 0px 0 #4c4c4c;
+        }
+
+        #end-of-page {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-weight: bolder;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container n mt-5">
+        <h2 class="text-center">Control Components Systems MCQ</h2>
+        <div class="progress mt-4">
+            <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0"
+                aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div id="score-container" class="text-center mt-4"></div>
+        <hr><hr>
+        <div id="quiz-container" class="mt-4">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        <hr>
+        <div id="end-of-page" class="mt-4">
+            <p>Developed by Mohamed Abdel Fatah</p>
+            <p><a href="https://github.com/Mohamed6061">Githup</a></p>
+            <p><a href="https://www.linkedin.com/in/mohamed-abdel-fatah-0369b6221">LinkedIn</a></p>
+        </div>
+    </div>
+
+    <audio id="correct-sound" src="correct.mp3"></audio>
+    <audio id="incorrect-sound" src="./g.wav"></audio>
+
+    <script>
+        const questions = [
+  {
+    question: "Differential amplifiers are used in Instrumentation amplifier.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "A differentiator is used to measure the sum of the input voltages.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "A resistor is shunted across the feedback capacitor in the practical integrator to reduce operating frequency.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "A filter is a frequency selective circuit.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "The filter which rejects only a narrow range of frequencies and passes all others is called a low pass filter.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "When a full band of frequencies is allowed to pass through a filter circuit to the output, the resonant circuit is called a band pass filter.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "A low pass filter allows only frequencies below the cutoff frequency to pass the signal.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "A high pass filter rejects signals with frequencies below the cutoff frequency and passes those above.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "The cutoff frequency of the low-pass filter must be higher than the cutoff frequency of the high-pass filter.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "A single-stage high-pass filter is similar to the low-pass filter but the positions of the R and C are the same.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "Practical circuits overcome chatter by using a voltage follower.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "Depending on the value of input and reference voltage, a comparator can be named as voltage follower.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "An op-amp without feedback can act as a comparator.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "A voltage follower can transform a high impedance signal into a robust low impedance signal.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "The voltage gain of an ideal op-amp is infinite.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "The gain of an op-amp voltage follower is infinite.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "The voltage follower has a closed loop bandwidth of zero value.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "The inverting circuit in the op amp is a linear region.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "In an inverting amplifier circuit, the output voltage is expressed as a function of source current.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "The integrator circuit is used when the output of the summing point equals zero to protect the system from damage.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "The summing amplifier is an application of a non-inverting op-amp.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "The phototransistor has a light-sensitive collector to base junction.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "In a phototransistor, the collector current level increases corresponding to an increase in light intensity.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "The graph of response against base current is called spectral response.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "In most applications, the phototransistor is used as a three-lead device.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "The interface between sensors, actuators, and digital circuits is an R-L Circuit.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "Op-Amp is abbreviated as operational amplitude.",
+    options: ["True", "False"],
+    answer: 1
+  },
+  {
+    question: "An Op-Amp is a voltage type of amplifier.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "An Op-Amp has high gain.",
+    options: ["True", "False"],
+    answer: 0
+  },
+  {
+    question: "The advantage of an ideal operational amplifier is very high gain only.",
+    options: ["True", "False"],
+    answer: 1
+  },
+    {
+        question: "___ is a device that converts physical characteristics into electrical signals.",
+        options: [
+            "a) Sensor",
+            "b) Actuator",
+            "c) Temperature sensors",
+            "d) All answers"
+        ],
+        answer: 0
+    },
+    {
+        question: "____ sensor is good for both static and dynamic measurements.",
+        options: [
+            "a) Acceleration",
+            "b) Pressure, Torque, and force",
+            "c) Ultrasonic",
+            "d) Rotameter"
+        ],
+        answer: 1
+    },
+    {
+        question: "___ is a type of flow sensor good for very high flow rates and can be used for upstream and downstream flow measurements.",
+        options: [
+            "a) Pitot tube",
+            "b) Rotameter",
+            "c) Ultrasonic",
+            "d) Force"
+        ],
+        answer: 2
+    },
+    {
+        question: "The ___ sensors produce continuous signals that are proportional to the sensed parameter.",
+        options: [
+            "a) Digital",
+            "b) Analog",
+            "c) Both A and B",
+            "d) None above all"
+        ],
+        answer: 1
+    },
+    {
+        question: "___ is one of the most fundamental of all measurements used in typical mechatronics systems.",
+        options: [
+            "a) Linear sensor",
+            "b) Rotational sensor",
+            "c) Proximity",
+            "d) A and B"
+        ],
+        answer: 3
+    },
+    {
+        question: "Piezoelectric accelerometers convert __ energy to __ energy, and are more suitable for __ frequency applications.",
+        options: [
+            "a) mechanical, sound, High",
+            "b) mechanical, electrical, High",
+            "c) sound, electrical, Low",
+            "d) sound, electrical, Low"
+        ],
+        answer: 1
+    },
+    {
+        question: "____ are normally aligned with an infrared light source.",
+        options: [
+            "a) Infrared sensor",
+            "b) Photoelectric sensor",
+            "c) Inductive proximity sensor",
+            "d) Ultrasonic proximity sensor"
+        ],
+        answer: 1
+    },
+    {
+        question: "Optical fibers can be used to sense ___.",
+        options: [
+            "a) Strain",
+            "b) Liquid level",
+            "c) Force",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "____ is the difference between the measured and true value.",
+        options: [
+            "a) Resonance",
+            "b) Range",
+            "c) Sensitivity",
+            "d) Accuracy"
+        ],
+        answer: 3
+    },
+    {
+        question: "___ is the smallest change the sensor can differentiate.",
+        options: [
+            "a) Precision",
+            "b) Range",
+            "c) Resolution",
+            "d) Bandwidth"
+        ],
+        answer: 2
+    },
+    {
+        question: "What is the function of an electric actuator?",
+        options: [
+            "a) converts electrical energy into mechanical torque",
+            "b) converts mechanical torque into electrical energy",
+            "c) converts mechanical energy into mechanical torque",
+            "d) None of above"
+        ],
+        answer: 0
+    },
+    {
+        question: "MEMS stands for __________.",
+        options: [
+            "a) Macro electro magnetism",
+            "b) Macro electro mechanism",
+            "c) Micro electro mechanism",
+            "d) Micro electro magnetism"
+        ],
+        answer: 2
+    },
+    {
+        question: "___ are devices that accept electrical signals and produce a change in the physical system by generating force, motion, heat, etc.",
+        options: [
+            "a) Diodes",
+            "b) Transistors",
+            "c) Actuators",
+            "d) Sensor"
+        ],
+        answer: 2
+    },
+    {
+        question: "The features of the Magnetostrictive are ____ frequency with ___ motion.",
+        options: [
+            "a) High, small",
+            "b) Low, large",
+            "c) High, large",
+            "d) Low, small"
+        ],
+        answer: 0
+    },
+    {
+        question: "The features of the Electrorheological fluids are ____ frequency with ____ force.",
+        options: [
+            "a) High, small",
+            "b) Low, large",
+            "c) High, large",
+            "d) Low, small"
+        ],
+        answer: 1
+    },
+    {
+        question: "The smart material actuators typically become part of the load-bearing structures that could be used to ___.",
+        options: [
+            "a) suppress vibration",
+            "b) change shape",
+            "c) cancel the noise",
+            "d) All the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "A stepper motor may be considered as a _______ converter.",
+        options: [
+            "a) Dc to dc",
+            "b) Ac to ac",
+            "c) Dc to ac",
+            "d) Digital-to-analogue"
+        ],
+        answer: 3
+    },
+    {
+        question: "____ are used in some applications in medical technology such as fiberscope.",
+        options: [
+            "a) Linear sensors",
+            "b) Pressure sensors",
+            "c) Proximity sensors",
+            "d) Micro sensors"
+        ],
+        answer: 3
+    },
+    {
+        question: "____ is a nonzero value output for no input.",
+        options: [
+            "a) Precision",
+            "b) Zero drift",
+            "c) Range",
+            "d) Accuracy"
+        ],
+        answer: 1
+    },
+    {
+        question: "____ is the ability to reproduce repeatedly with a given accuracy.",
+        options: [
+            "a) Precision",
+            "b) Range",
+            "c) Linearity",
+            "d) Accuracy"
+        ],
+        answer: 0
+    }, 
+    {
+        question: "____ is the difference between the maximum and minimum value of the sensed parameter.",
+        options: [
+            "a) Range",
+            "b) Accuracy",
+            "c) Linearity",
+            "d) Resonance"
+        ],
+        answer: 0
+    },
+    {
+        question: "This element is responsible for converting the non-electrical signal into its proportional electrical signal and is called ______.",
+        options: [
+            "a) Transducer",
+            "b) Transduction elements",
+            "c) Sensor",
+            "d) Sensing element"
+        ],
+        answer: 1
+    },
+    {
+        question: "Transducers will have basically main components such as ____.",
+        options: [
+            "a) Transduction elements",
+            "b) Sensing element",
+            "c) a and b",
+            "d) None of the above"
+        ],
+        answer: 2
+    },
+    {
+        question: "Potentiometer transducers are used for the measurement of ____.",
+        options: [
+            "a) Brightness control",
+            "b) Displacement",
+            "c) Humidity",
+            "d) Both (a) and (b)"
+        ],
+        answer: 3
+    },
+    {
+        question: "These transducers convert input quantity into an electrical output:",
+        options: [
+            "a) Digital transducers",
+            "b) Analog transducers",
+            "c) Primary transducers",
+            "d) None of the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "The voltage and current transducers include __.",
+        options: [
+            "a) Hall effects pick up",
+            "b) Ionizations chamber",
+            "c) Photo missive cell",
+            "d) All the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "These transducers convert the input quantity into an analog output __.",
+        options: [
+            "a) Digital transducers",
+            "b) Analog transducers",
+            "c) Primary transducers",
+            "d) None of the above"
+        ],
+        answer: 1
+    },
+    {
+        question: "Requirements of a good transducer are:",
+        options: [
+            "a) smaller in size and weight",
+            "b) High sensitivity",
+            "c) ability to withstand environment conditions",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "The important parameters while selecting a potentiometer are __.",
+        options: [
+            "a) Operating temperature",
+            "b) Shock and vibration",
+            "c) Humidity",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "For the advantages of potentiometer, which of the following statements is incorrect?",
+        options: [
+            "a) Easy to use",
+            "b) Expensive",
+            "c) High amplitude output",
+            "d) Proven Technology and easily available"
+        ],
+        answer: 1
+    },  
+    {
+        question: "Strain Gauge can be used for measurement of ___.",
+        options: [
+            "a) Torque",
+            "b) force",
+            "c) Pressure",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "Poisson's ratio is defined as the ratio of __.",
+        options: [
+            "a) Longitudinal stress and longitudinal strain",
+            "b) Longitudinal stress and lateral stress",
+            "c) Lateral stress and longitudinal stress",
+            "d) Lateral stress and lateral strain"
+        ],
+        answer: 2
+    },
+    {
+        question: "The gauge factor of metallic strain gauge varies in the range __.",
+        options: [
+            "a) 1 to 1.8",
+            "b) 1.8 to 2.6",
+            "c) .5 to 1",
+            "d) 5 to 10"
+        ],
+        answer: 1
+    },
+    {
+        question: "An inductive transducer measures the variation in __.",
+        options: [
+            "a) reluctance",
+            "b) resistance",
+            "c) capacitance",
+            "d) self-inductance"
+        ],
+        answer: 0
+    },
+    {
+        question: "Change of Self Inductance of an inductive transducer: __.",
+        options: [
+            "a) l = µGN^2",
+            "b) l = µGN",
+            "c) l = µN^2",
+            "d) l = µNG^2"
+        ],
+        answer: 0
+    },
+    {
+        question: "When a conducting plate is placed near a coil carrying alternating current, a circulating current is induced in the plate called __.",
+        options: [
+            "a) Starting current",
+            "b) Eddy current",
+            "c) Alternating current",
+            "d) Charging current"
+        ],
+        answer: 1
+    },
+    {
+        question: "The transformer in LVDT consists of a primary winding P and __ secondary windings.",
+        options: [
+            "a) one",
+            "b) two",
+            "c) three",
+            "d) four"
+        ],
+        answer: 1
+    },
+    {
+        question: "LVDT stands for _________.",
+        options: [
+            "a) Linear Virtual Double Transformer",
+            "b) Linear Virtual Differential Transducer",
+            "c) Linear Variable Differential Transducer",
+            "d) Linear Variable Differential Transformer"
+        ],
+        answer: 3
+    },
+    {
+        question: "LVDT, which is an instrument for the measurement of displacement, works on the principle of __.",
+        options: [
+            "a) Linear inductance",
+            "b) Non-linear inductance",
+            "c) Mutual inductance",
+            "d) Linear capacitance"
+        ],
+        answer: 2
+    },
+    {
+        question: "LVDT is a _______ transducer.",
+        options: [
+            "a) displacement",
+            "b) photoelectric",
+            "c) thermal",
+            "d) chemical"
+        ],
+        answer: 0
+    }, 
+    {
+        question: "Advantages of LVDT are ___.",
+        options: [
+            "a) High Range",
+            "b) Low Hysteresis",
+            "c) Low power consumption",
+            "d) all of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "The power is about 1w, which is very low as compared to other transducers.",
+        options: [
+            "a) High Range",
+            "b) no frictional losses",
+            "c) Low Hysteresis",
+            "d) Low power consumption"
+        ],
+        answer: 3
+    },
+    {
+        question: "In general, the output impedance of a capacitive transducer is ___.",
+        options: [
+            "a) high",
+            "b) low",
+            "c) medium",
+            "d) none of the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "Capacitive transduction involves a change in _______ but a thermistor involves a change in _______.",
+        options: [
+            "a) capacitance - inductance",
+            "b) capacitance - resistance",
+            "c) capacitance - capacitance",
+            "d) None of above"
+        ],
+        answer: 1
+    },
+    {
+        question: "Capacitive transducers can be used by___________.",
+        options: [
+            "a) Measuring change in distance between plates",
+            "b) Measuring change in area of plates",
+            "c) Change in a dielectric material",
+            "d) All of the mentioned"
+        ],
+        answer: 3
+    },
+    {
+        question: "Capacitive transducers advantages include:",
+        options: [
+            "a) They require extremely small forces to operate them",
+            "b) They are extremely sensitive",
+            "c) They require small power",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "Disadvantages of capacitive transducers include _________.",
+        options: [
+            "a) require extremely small forces to operate",
+            "b) extremely sensitive",
+            "c) require small power to operate",
+            "d) None of above"
+        ],
+        answer: 1
+    },
+    {
+        question: "Capacitive transducers using change in the area of plates are suitable for the measurement of linear displacement ranging from _________.",
+        options: [
+            "a) 1 to 10 m",
+            "b) 1 to 10 mm",
+            "c) 1 to 10 cm",
+            "d) None of above"
+        ],
+        answer: 2
+    },
+    {
+        question: "In a capacitive transducer using change in dielectric constant, the major factors that will cause a change in capacitance are ______.",
+        options: [
+            "a) moisture",
+            "b) voltage",
+            "c) frequency",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "The capacitive transducer can be used for the measurement of _______.",
+        options: [
+            "a) linear displacement only",
+            "b) angular displacement only",
+            "c) both linear and angular displacements",
+            "d) None of above"
+        ],
+        answer: 2
+    },  
+    {
+        question: "Advantages of LVDT are ___.",
+        options: [
+            "a) High Range",
+            "b) Low Hysteresis",
+            "c) Low power consumption",
+            "d) all of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "The power is about 1w, which is very low as compared to other transducers.",
+        options: [
+            "a) High Range",
+            "b) no frictional losses",
+            "c) Low Hysteresis",
+            "d) Low power consumption"
+        ],
+        answer: 3
+    },
+    {
+        question: "In general, the output impedance of a capacitive transducer is ___.",
+        options: [
+            "a) high",
+            "b) low",
+            "c) medium",
+            "d) none of the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "Capacitive transduction involves a change in _______ but a thermistor involves a change in _______.",
+        options: [
+            "a) capacitance - inductance",
+            "b) capacitance - resistance",
+            "c) capacitance - capacitance",
+            "d) None of above"
+        ],
+        answer: 1
+    },
+    {
+        question: "Capacitive transducers can be used by___________.",
+        options: [
+            "a) Measuring change in distance between plates",
+            "b) Measuring change in area of plates",
+            "c) Change in a dielectric material",
+            "d) All of the mentioned"
+        ],
+        answer: 3
+    },
+    {
+        question: "Capacitive transducers advantages include:",
+        options: [
+            "a) They require extremely small forces to operate them",
+            "b) They are extremely sensitive",
+            "c) They require small power",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "Disadvantages of capacitive transducers include _________.",
+        options: [
+            "a) require extremely small forces to operate",
+            "b) extremely sensitive",
+            "c) require small power to operate",
+            "d) None of above"
+        ],
+        answer: 1
+    },
+    {
+        question: "Capacitive transducers using change in the area of plates are suitable for the measurement of linear displacement ranging from _________.",
+        options: [
+            "a) 1 to 10 m",
+            "b) 1 to 10 mm",
+            "c) 1 to 10 cm",
+            "d) None of above"
+        ],
+        answer: 2
+    },
+    {
+        question: "In a capacitive transducer using change in dielectric constant, the major factors that will cause a change in capacitance are ______.",
+        options: [
+            "a) moisture",
+            "b) voltage",
+            "c) frequency",
+            "d) All of above"
+        ],
+        answer: 3
+    },
+    {
+        question: "The capacitive transducer can be used for the measurement of _______.",
+        options: [
+            "a) linear displacement only",
+            "b) angular displacement only",
+            "c) both linear and angular displacements",
+            "d) None of above"
+        ],
+        answer: 2
+    }, 
+    {
+        question: "In the phototransistor, a small leakage current flows from collector to emitter called ___.",
+        options: [
+            "a) IeEo",
+            "b) Ic",
+            "c) Ib",
+            "d) Ie"
+        ],
+        answer: 0
+    },
+    {
+        question: "In the phototransistor, the collector current level _ ___ corresponding to increase in the light intensity.",
+        options: [
+            "a) increases",
+            "b) decreases",
+            "c) does not change",
+            "d) decreases rapidly"
+        ],
+        answer: 0
+    },
+    {
+        question: "The graph of response against _ ___ is called spectral response.",
+        options: [
+            "a) Base current",
+            "b) Radiation flux density",
+            "c) current collector",
+            "d) Wavelength"
+        ],
+        answer: 3
+    },
+    {
+        question: "In most of the applications, the phototransistor is used as a ____ lead device.",
+        options: [
+            "a) one",
+            "b) two",
+            "c) three",
+            "d) four"
+        ],
+        answer: 1
+    },  
+    {
+        question: "Change in output of sensor with change in input is ____________",
+        options: [
+            "a) Threshold",
+            "b) Slew rate",
+            "c) Sensitivity",
+            "d) None of the mentioned"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which of the following can be cause for non-zero output when zero input?",
+        options: [
+            "a) Bias",
+            "b) Slew",
+            "c) Offset",
+            "d) Offset or bias"
+        ],
+        answer: 3
+    },
+    {
+        question: "Smallest change which a sensor can detect is ____________",
+        options: [
+            "a) Resolution",
+            "b) Accuracy",
+            "c) Precision",
+            "d) Scale"
+        ],
+        answer: 0
+    },
+    {
+        question: "A device that converts one form of energy into other form of energy is called _______",
+        options: [
+            "a) Transmitters",
+            "b) Transducers",
+            "c) Receivers",
+            "d) None of the above"
+        ],
+        answer: 1
+    },
+    {
+        question: "Ability to reproduce consistent readings is called ____________",
+        options: [
+            "a) Resolution",
+            "b) Accuracy",
+            "c) Precision",
+            "d) Scale"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which of the following can be used for measuring temperature?",
+        options: [
+            "a) Metallic diaphragm",
+            "b) Thermometer",
+            "c) Capsule",
+            "d) Bourdon tube"
+        ],
+        answer: 1
+    },
+    {
+        question: "Other name of RTD is _________",
+        options: [
+            "a) Thermister",
+            "b) Thermocouple",
+            "c) Resistance thermometer",
+            "d) All the above"
+        ],
+        answer: 2
+    },
+    {
+        question: "What is PTC thermistor?",
+        options: [
+            "a) Positive temperature coefficient thermistor",
+            "b) Positive transient coefficient thermistor",
+            "c) Pulse transmit coefficient thermistor",
+            "d) All the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "Select standard signal range of electrical signals",
+        options: [
+            "a) 4 to 20 mA",
+            "b) 0.2 to 1.0 bar",
+            "c) 3 to 15 psi",
+            "d) All the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "Select standard signal range of pneumatic signals",
+        options: [
+            "a) 4 to 20 mA",
+            "b) 5 to 25 psi",
+            "c) 3 to 15 psi",
+            "d) All the above"
+        ],
+        answer: 2
+    },
+    {
+        question: "Strain gauge is a _______ device that converts _____ into _____.",
+        options: [
+            "a) Active; electrical signal; change of resistance",
+            "b) Passive; electrical signal; change of resistance",
+            "c) Active; mechanical displacement; change of resistance",
+            "d) Passive; mechanical motion; change of resistance"
+        ],
+        answer: 3
+    },
+    {
+        question: "What is humidity sensor?",
+        options: [
+            "a) Hygrometer",
+            "b) Gyroscope",
+            "c) Seismoscope",
+            "d) Sundial"
+        ],
+        answer: 0
+    },
+    {
+        question: "In a LVDT, the two secondary voltages",
+        options: [
+            "a) Are independent of the core position",
+            "b) Vary unequally depending on the core position",
+            "c) Vary equally depending on the core position",
+            "d) Are always in phase quadrature"
+        ],
+        answer: 1
+    },
+    {
+        question: "Which of the following devices is used for conversion of coordinates?",
+        options: [
+            "a) Synchros",
+            "b) Microsyn",
+            "c) Synchros resolver",
+            "d) Synchro transformer"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which of the following terms accurately describes a synchro?",
+        options: [
+            "a) Electromechanical",
+            "b) Position-sensing",
+            "c) Rotary",
+            "d) All the above"
+        ],
+        answer: 3
+    } ,
+    {
+        question: "Microsyn is based on the principle of",
+        options: [
+            "a) DC motor",
+            "b) Resolver",
+            "c) Saturable reactor",
+            "d) Rotating differential transformer"
+        ],
+        answer: 3
+    },
+    {
+        question: "Which type of proximity sensor can be used as touch sensor?",
+        options: [
+            "a) Inductive proximity sensor",
+            "b) Capacitive proximity sensor",
+            "c) Ultrasonic proximity sensor",
+            "d) Photoelectric proximity sensor"
+        ],
+        answer: 1
+    },
+    {
+        question: "What is the relation between the self-inductance and the reluctance of a coil?",
+        options: [
+            "a) Directly proportional",
+            "b) Inversely proportional",
+            "c) No relation",
+            "d) Constant"
+        ],
+        answer: 1
+    },
+    {
+        question: "Capacitance of a parallel plate capacitor is ________",
+        options: [
+            "a) C = A∈⁄d",
+            "b) C = ∈⁄d",
+            "c) C = A⁄d",
+            "d) C = A"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which of the following device can be used for displacement measurement?",
+        options: [
+            "a) LVDT",
+            "b) Bellows",
+            "c) Capsule",
+            "d) Bourdon tube"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which proximity sensor can detect both metal and non-metal objects?",
+        options: [
+            "a) Ultrasonic sensor",
+            "b) Inductive proximity sensor",
+            "c) Capacitive proximity sensor",
+            "d) None of these"
+        ],
+        answer: 2
+    },
+    {
+        question: "The principle of operation of LVDT is based on the variation of",
+        options: [
+            "a) Self inductance",
+            "b) Mutual inductance",
+            "c) Reluctance",
+            "d) Permanence"
+        ],
+        answer: 1
+    },
+    {
+        question: "Which energy is converted into mechanical energy by the hydraulic cylinders?",
+        options: [
+            "a) Hydrostatic energy",
+            "b) Hydrodynamic energy",
+            "c) Electrical energy",
+            "d) None of the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is the advantage of using a single acting cylinder?",
+        options: [
+            "a) High cost and reliable",
+            "b) Honing inside the inner surface of pump is not required",
+            "c) Piston seals are not required",
+            "d) All the above"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which part will surely tell that given motor is DC motor and not an AC type?",
+        options: [
+            "a) Winding",
+            "b) Shaft",
+            "c) Commutator",
+            "d) Stator"
+        ],
+        answer: 2
+    },
+    {
+        question: "Direction of rotation of motor is determined by ____________",
+        options: [
+            "a) Faraday’s law",
+            "b) Lenz’s law",
+            "c) Coulomb’s law",
+            "d) Fleming’s left-hand rule"
+        ],
+        answer: 3
+    },
+    {
+        question: "Starters are used in induction motor because",
+        options: [
+            "a) Its starting torque is high",
+            "b) It is run against heavy load",
+            "c) It cannot run in reverse direction",
+            "d) Its starting current is five times or more than its rated current"
+        ],
+        answer: 3
+    },
+    {
+        question: "In an induction motor, rotor runs at a speed",
+        options: [
+            "a) Equal to the speed of stator field",
+            "b) Lower than the speed of stator field",
+            "c) Higher than the speed of stator field",
+            "d) Having no relation with the speed of stator field"
+        ],
+        answer: 1
+    },
+    {
+        question: "The main purpose of a control valve positioner is to:",
+        options: [
+            "a) Alter the fail-safe status of the valve",
+            "b) Improve the precision of the valve",
+            "c) Eliminate cavitations in the valve",
+            "d) Increase transmitter accuracy"
+        ],
+        answer: 1
+    },
+    {
+        question: "What happens to the magnetic field in the solenoid when the current increases?",
+        options: [
+            "a) Increases",
+            "b) Decreases",
+            "c) Remains constant",
+            "d) Becomes zero"
+        ],
+        answer: 0
+    }, 
+    {
+        question: "Rotor resistance speed control method is not applicable in",
+        options: [
+            "a) Slip Ring induction motor",
+            "b) Squirrel cage induction motor",
+            "c) Synchronous motor",
+            "d) None of the above"
+        ],
+        answer: 1
+    },
+    {
+        question: "What is the ratio of rotor input power to rotor copper loss in an induction motor?",
+        options: [
+            "a) 1/(1 – S)",
+            "b) 1 – S",
+            "c) 1/S",
+            "d) S"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which of these actions does a hydraulic cylinder perform?",
+        options: [
+            "a) Pushing",
+            "b) Lifting",
+            "c) Both a and b",
+            "d) None of the above"
+        ],
+        answer: 2
+    },
+    {
+        question: "The difference between the maximum and minimum value of the sensed parameter is ____________",
+        options: [
+            "a) Resolution",
+            "b) Sensitivity",
+            "c) Error",
+            "d) None of the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "The ability of a sensor to give the same output for repeated applications of the same input value is ____________",
+        options: [
+            "a) Impedance",
+            "b) Response time",
+            "c) Accuracy",
+            "d) None of the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "The percentage of deviation from the best fit linear calibration curve is ____________",
+        options: [
+            "a) Accuracy",
+            "b) Precision",
+            "c) Error",
+            "d) None of the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "(maximum – minimum values given) X 100 / full range is called ____________",
+        options: [
+            "a) Accuracy",
+            "b) Precision",
+            "c) Repeatability",
+            "d) None of the above"
+        ],
+        answer: 2
+    },
+    {
+        question: "Pneumatic Signal is the pressure of ____________ in a pipe, instead of ____________",
+        options: [
+            "a) Gas – electrical current",
+            "b) Gas – air and electrical current",
+            "c) Gas or air – electrical current",
+            "d) Electrical current – gas"
+        ],
+        answer: 2
+    },
+    {
+        question: "Change in output of sensor with change in input is ____________",
+        options: [
+            "a) Threshold",
+            "b) Slew rate",
+            "c) Sensitivity",
+            "d) None of the mentioned"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which of the following can be the cause for a non-zero output when zero input?",
+        options: [
+            "a) Bias",
+            "b) Slew",
+            "c) Offset or bias",
+            "d) Offset"
+        ],
+        answer: 2
+    },
+    {
+        question: "Smallest change which a sensor can detect is ____________",
+        options: [
+            "a) Resolution",
+            "b) Accuracy",
+            "c) Precision",
+            "d) Scale"
+        ],
+        answer: 0
+    },
+    {
+        question: "A device that converts one form of energy into another form of energy is called ____________",
+        options: [
+            "a) Transducers",
+            "b) Transmitters",
+            "c) Receivers",
+            "d) None of the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "Ability to reproduce consistent readings is called ____________",
+        options: [
+            "a) Precision",
+            "b) Accuracy",
+            "c) Resolution",
+            "d) Scale"
+        ],
+        answer: 0
+    }, 
+    {
+        question: "Which of the following can be used for measuring temperature?",
+        options: [
+            "a) Thermometer",
+            "b) Metallic diaphragm",
+            "c) Capsule",
+            "d) Bourdon tube"
+        ],
+        answer: 0
+    },
+    {
+        question: "Other name of RTD is ____________",
+        options: [
+            "a) Resistance thermometer",
+            "b) Thermocouple",
+            "c) Thermister",
+            "d) All the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "What is PTC thermistor?",
+        options: [
+            "a) Positive temperature coefficient thermistor",
+            "b) Positive transient coefficient thermistor",
+            "c) Pulse transmit coefficient thermistor",
+            "d) All the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "Select standard signal range of electrical signals",
+        options: [
+            "a) 4 to 20 MA",
+            "b) 0.2 to 1.0 bar",
+            "c) 3 to 15 psi",
+            "d) All the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "Strain gauge is a ____________ device that converts ____________ into ____________",
+        options: [
+            "a) Active; electrical signal; change of resistance",
+            "b) Passive; electrical signal; change of resistance",
+            "c) Active; mechanical displacement; change of resistance",
+            "d) Passive; mechanical motion; change of resistance"
+        ],
+        answer: 3
+    },
+    {
+        question: "What is humidity sensor?",
+        options: [
+            "a) Hygrometer",
+            "b) Gyroscope",
+            "c) Seismoscope",
+            "d) Sundial"
+        ],
+        answer: 0
+    },
+    {
+        question: "In a LVDT, the two secondary voltages",
+        options: [
+            "a) Are independent of the core position",
+            "b) Vary unequally depending on the core position",
+            "c) Vary equally depending on the core position",
+            "d) Are always in phase quadrature"
+        ],
+        answer: 1
+    },
+    {
+        question: "Which of the following devices is used for conversion of coordinates?",
+        options: [
+            "a) Synchros",
+            "b) Microsyn",
+            "c) Synchros resolver",
+            "d) Synchro transformer"
+        ],
+        answer: 2
+    },
+    {
+        question: "Which of the following terms accurately describes a synchro?",
+        options: [
+            "a) Electromechanical",
+            "b) Position-sensing",
+            "c) Rotary",
+            "d) All the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "Microsyn is based on the principle of ____________",
+        options: [
+            "a) DC motor",
+            "b) Resolver",
+            "c) Saturable reactor",
+            "d) Rotating differential transformer"
+        ],
+        answer: 3
+    },
+    {
+        question: "Which type of proximity sensor can be used as a touch sensor?",
+        options: [
+            "a) Inductive proximity sensor",
+            "b) Capacitive proximity sensor",
+            "c) Ultrasonic proximity sensor",
+            "d) Photoelectric proximity sensor"
+        ],
+        answer: 1
+    },
+    {
+        question: "What is the relation between the self-inductance and the reluctance of a coil?",
+        options: [
+            "a) Directly proportional",
+            "b) Inversely proportional",
+            "c) No relation",
+            "d) Constant"
+        ],
+        answer: 1
+    },
+    {
+        question: "Which of the following devices can be used for displacement measurement?",
+        options: [
+            "a) LVDT",
+            "b) Bellows",
+            "c) Capsule",
+            "d) Bourdon tube"
+        ],
+        answer: 0
+    },
+    {
+        question: "Which proximity sensor can detect both metal and non-metal objects?",
+        options: [
+            "a) Ultrasonic sensor",
+            "b) Inductive proximity sensor",
+            "c) Capacitive proximity sensor",
+            "d) None of these"
+        ],
+        answer: 2
+    },
+    {
+        question: "The principle of operation of LVDT is based on the variation of ____________",
+        options: [
+            "a) Self inductance",
+            "b) Mutual inductance",
+            "c) Reluctance",
+            "d) Permanence"
+        ],
+        answer: 1
+    } , 
+    {
+        question: "__________ is a device that converts physical characteristics into electrical signals.",
+        options: [
+            "A) Sensor",
+            "B) Actuator",
+            "C) Temperature sensors",
+            "D) All answers"
+        ],
+        answer: 0
+    },
+    {
+        question: "__________ sensor is good for both static and dynamic measurements.",
+        options: [
+            "A) Acceleration",
+            "B) Pressure, Torque and Force",
+            "C) Ultrasonic",
+            "D) Rotameter"
+        ],
+        answer: 1
+    },
+    {
+        question: "__________ is a type of flow sensor good for very high flow rates and can be used for upstream and downstream flow measurements.",
+        options: [
+            "A) Pitot tube",
+            "B) Rotameter",
+            "C) Ultrasonic",
+            "D) Force"
+        ],
+        answer: 2
+    },
+    {
+        question: "__________ sensors produce continuous signals that are proportional to the sensed parameter.",
+        options: [
+            "A) Digital",
+            "B) Analog",
+            "C) Both (A) and (B)",
+            "D) No one from the above"
+        ],
+        answer: 1
+    },
+    {
+        question: "__________ is one of the most fundamental of all measurements used in typical mechatronics systems.",
+        options: [
+            "A) Linear sensor",
+            "B) Rotational sensor",
+            "C) Proximity",
+            "D) (A) and (B)"
+        ],
+        answer: 3
+    },
+    {
+        question: "Piezoelectric accelerometers convert __________ energy to __________ energy, and are more suitable for __________ frequency applications.",
+        options: [
+            "A) Mechanical, Sound, High",
+            "B) Mechanical, Electrical, High",
+            "C) Sound, Electrical, Low",
+            "D) Sound, Electrical, Low"
+        ],
+        answer: 1
+    },
+    {
+        question: "__________ are normally aligned with an infrared light source.",
+        options: [
+            "A) Infrared sensor",
+            "B) Photoelectric sensor",
+            "C) Inductive proximity sensor",
+            "D) Ultrasonic proximity sensor"
+        ],
+        answer: 1
+    },
+    {
+        question: "Optical fibers can be used to sense __________.",
+        options: [
+            "A) Strain",
+            "B) Liquid level",
+            "C) Force",
+            "D) All of the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "__________ is the difference between the measured and true value.",
+        options: [
+            "A) Resonance",
+            "B) Range",
+            "C) Sensitivity",
+            "D) Accuracy"
+        ],
+        answer: 3
+    },
+    {
+        question: "__________ is the smallest change the sensor can differentiate.",
+        options: [
+            "A) Precision",
+            "B) Range",
+            "C) Resolution",
+            "D) Bandwidth"
+        ],
+        answer: 2
+    },
+    {
+        question: "What is the function of an electric actuator?",
+        options: [
+            "A) Converts electrical energy into mechanical torque",
+            "B) Converts mechanical torque into electrical energy",
+            "C) Converts mechanical energy into mechanical torque",
+            "D) None of the above"
+        ],
+        answer: 0
+    },
+    {
+        question: "__________ are devices that accept electrical signals and produce a change in the physical system by generating force, motion, heat, etc.",
+        options: [
+            "A) Diodes",
+            "B) Transistors",
+            "C) Actuators",
+            "D) Sensor"
+        ],
+        answer: 2
+    },
+    {
+        question: "The features of the Magnetostrictive are __________ frequency with __________ motion.",
+        options: [
+            "A) High, Small",
+            "B) Low, Large",
+            "C) High, Large",
+            "D) Low, Small"
+        ],
+        answer: 0
+    },
+    {
+        question: "The smart material actuators typically become part of the load-bearing structures that could be used to __________.",
+        options: [
+            "A) Suppress vibration",
+            "B) Change shape",
+            "C) Cancel the noise",
+            "D) All of the above"
+        ],
+        answer: 3
+    },
+    {
+        question: "A stepper motor may be considered as a __________ converter.",
+        options: [
+            "A) DC to DC",
+            "B) AC to AC",
+            "C) DC to AC",
+            "D) Digital-to-analog"
+        ],
+        answer: 3
+    },
+    {
+        question: "____________ are used in some applications in medical technology such as fiberscope.",
+        options: [
+            "A) Linear sensors",
+            "B) Pressure sensors",
+            "C) Proximity sensors",
+            "D) Micro sensors"
+        ],
+        answer: 3
+    },
+    {
+        question: "____________ is a nonzero value output for no input.",
+        options: [
+            "A) Precision",
+            "B) Zero drift",
+            "C) Range",
+            "D) Accuracy"
+        ],
+        answer: 1
+    },
+    {
+        question: "____________ is the ability to reproduce repeatedly with a given accuracy.",
+        options: [
+            "A) Precision",
+            "B) Range",
+            "C) Linearity",
+            "D) Accuracy"
+        ],
+        answer: 0
+    },
+    {
+        question: "____________ is the difference between the maximum and minimum value of the sensed parameter.",
+        options: [
+            "A) Range",
+            "B) Accuracy",
+            "C) Linearity",
+            "D) Resonance"
+        ],
+        answer: 0
+    },
+    {
+        question: "This element is responsible for converting the non-electrical signal into its proportional electrical signal and is called ____________.",
+        options: [
+            "A) Transducer",
+            "B) Transduction elements",
+            "C) Sensor",
+            "D) Sensing element"
+        ],
+        answer: 1
+    }
+];
+
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function showQuestion(index) {
+            const quizContainer = document.getElementById("quiz-container");
+            quizContainer.innerHTML = `
+                  <div class="question-container l active">
+                    <h5>Quesitoin ${index + 1} From ${questions.length}</h5>
+                    <h4 style="color:red">${questions[index].question}</h4>
+                    <div id="options-container" style="color:blue" class="d-flex flex-wrap"></div>
+                  </div>
+                `;
+
+
+            const optionsContainer = document.getElementById("options-container");
+            questions[index].options.forEach((option, i) => {
+                optionsContainer.innerHTML += `
+                    <div class="option-box" onclick="checkAnswer(${i})">${option}</div>
+                  `;
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            const answer = questions[currentQuestionIndex].answer;
+
+            questions[currentQuestionIndex].selectedIndex = selectedIndex;
+
+            if (selectedIndex === answer) {
+                score++;
+                document
+                    .querySelectorAll(".option-box")
+                    [answer].classList.add("correct");
+                document.getElementById("correct-sound").play();
+            } else {
+                document
+                    .querySelectorAll(".option-box")
+                    [selectedIndex].classList.add("incorrect");
+                document
+                    .querySelectorAll(".option-box")
+                    [answer].classList.add("correct");
+                document.getElementById("incorrect-sound").play();
+            }
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion(currentQuestionIndex);
+                    updateProgressBar();
+                } else {
+                    showScore();
+                    showSolutions();
+                }
+            }, 2000);
+        }
+
+        function showScore() {
+            const quizContainer = document.getElementById("quiz-container");
+            const scoreContainer = document.getElementById("score-container");
+            quizContainer.innerHTML = "";
+            scoreContainer.innerHTML = `<h3>Your result ${score} from ${questions.length}</h3>`;
+        }
+
+        function showSolutions() {
+            const quizContainer = document.getElementById("quiz-container");
+            const solutionsContainer = document.createElement("div");
+            solutionsContainer.classList.add("question-solution-container");
+            quizContainer.appendChild(solutionsContainer);
+
+            questions.forEach((question, index) => {
+                const solutionDiv = document.createElement("div");
+                solutionDiv.innerHTML = `
+                    <h4 style="color: red">${index + 1}. ${question.question}</h4>
+                    ${question.selectedIndex !== undefined ? `<p><strong>Your Choice:</strong> ${question.options[question.selectedIndex]}</p>` : ''}
+                    <p><strong>Correct Answer:</strong> ${question.options[question.answer]}</p>
+                    `;
+                    solutionsContainer.appendChild(solutionDiv);
+                });
+            }
+
+            function updateProgressBar() {
+                const progressBar = document.getElementById("progress-bar");
+                const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute("aria-valuenow", progress);
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                showQuestion(currentQuestionIndex);
+                updateProgressBar();
+            });
+        </script>
+    </body>
+</html>
+
+    
